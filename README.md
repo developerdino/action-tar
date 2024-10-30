@@ -43,7 +43,7 @@ jobs:
       - run: composer install --ansi --no-progress --no-interaction --prefer-dist
       - uses: developerdino/action-tar@v1
         with:
-          args: tar xzf vendor.tar.gz vendor
+          args: tar -czf vendor.tar.gz vendor
       - uses: actions/upload-artifact@v2
         with:
           name: vendor.tar.gz
