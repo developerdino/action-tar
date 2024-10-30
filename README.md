@@ -1,37 +1,34 @@
-# Zip Files Action
+# Tar Files Action
 
-This GitHub action exposes the zip command for use in building/archiving. It is important to note that this action currently only supports Linux.
+This GitHub action exposes the tar command for use in building/archiving. It is important to note that this action currently only supports Linux.
 
 ## Usage
 
-Zipping the directory `dir` into `dir.zip`:
+Tar the directory `dir` into `dir.tar.gz`:
 
 ```yaml
-- uses: montudor/action-zip@v1
+- uses: developerdino/action-tar@v1
   with:
-    args: zip -qq -r dir.zip dir
+    args: tar -czf dir.tar.gz dir
 ```
 
-Unzipping a `dir.zip` file:
+Untar a `dir.tar` file:
 
 ```yaml
-- uses: montudor/action-zip@v1
+- uses: developerdino/action-tar@v1
   with:
-    args: unzip -qq dir.zip -d dir
+    args: tar -xzf dir.tar
 ```
 
-Zipping a folder from a different work dir
+Tar a folder from a different work dir
 
 ```yaml
-- name: Install zip
-  uses: montudor/action-zip@v1
-
-- name: Zip output
-  run: zip -qq -r function.zip dist node_modules package.json
-  working-directory: path/to/work-dir
+- uses: developerdino/action-tar@v1
+  with:
+    args: tar -C dir -czf dir.tar.gz .
 ```
 
-Reusing the same zip between steps in a `PHP` CI with unit and mutation tests:
+Reusing the same tar between steps in a `PHP` CI with unit and mutation tests:
 
 ```yaml
 name: Continuous Integration
@@ -44,12 +41,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: composer install --ansi --no-progress --no-interaction --prefer-dist
-      - uses: montudor/action-zip@v1
+      - uses: developerdino/action-tar@v1
         with:
-          args: zip -qq -r vendor.zip vendor
+          args: tar xzf vendor.tar.gz vendor
       - uses: actions/upload-artifact@v2
         with:
-          name: vendor.zip
+          name: vendor.tar.gz
   tests:
     needs: composer-install
     runs-on: ubuntu-latest
@@ -57,10 +54,10 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/download-artifact@v2
         with:
-          name: vendor.zip
-      - uses: montudor/action-zip@v1
+          name: vendor.tar.gz
+      - uses: developerdino/action-tar@v1
         with:
-          args: unzip -qq vendor.zip -d vendor
+          args: tar -xzf vendor.tar.gz vendor
       - run: ./vendor/bin/phpunit
   mutation:
     needs: composer-install
@@ -69,9 +66,13 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/download-artifact@v2
         with:
-          name: vendor.zip
-      - uses: montudor/action-zip@v1
+          name: vendor.tar.gz
+      - uses: developerdino/action-tar@v1
         with:
-          args: unzip -qq vendor.zip -d vendor
+          args: tar -xjf vendor.tar.gz vendor
       - run: ./vendor/bin/infection
 ```
+
+# Attribution
+
+This action is based on the [montudor/action-zip](https://github.com/montudor/action-zip) action by [@montudor](https://github.com/montudor).

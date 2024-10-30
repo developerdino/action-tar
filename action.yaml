@@ -1,6 +1,6 @@
-name: "action-zip"
-author: "Monte Hellawell @montudor"
-description: "This GitHub action exposes the zip command for use in building/archiving"
+name: "action-tar"
+author: "Dean Tedesco @developerdino"
+description: "This GitHub action exposes the tar command for use in building/archiving"
 branding:
   icon: folder-plus
   color: gray-dark
@@ -9,5 +9,5 @@ runs:
   image: "Dockerfile"
 inputs:
   args:
-    description: "See montudor/action-zip README.md for more info"
+    description: "See developerdino/action-tar README.md for more info"
     required: false
